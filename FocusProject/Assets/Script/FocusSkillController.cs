@@ -170,12 +170,12 @@ public class FocusSkillController : MonoBehaviour
     // 현재 전체 범위의 월드 기준 반지름 반환
     public float GetEffectiveWorldRadius()
     {
-        return maxFocusRange * (currentFocusTime / maxFocusTime);
+        return (maxFocusRange * (currentFocusTime / maxFocusTime)) / 2f ;
     }
 
     // 슬로우 계수 (0.2 = 20% 속도)
     public float GetSlowFactor()
     {
-        return 0.2f;
+        return 0.1f;
     }
 }

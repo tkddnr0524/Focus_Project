@@ -9,7 +9,7 @@ public class FocusSlowManager : MonoBehaviour
     private FocusSkillController focus;
 
     [Range(0f, 1f)]
-    public float slowFactor = 0.2f;
+    public float slowFactor = 0.1f;
 
     private IFocusAffectable affectable;
 

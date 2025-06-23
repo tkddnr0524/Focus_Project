@@ -74,10 +74,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (thin != null)
         {
-            Collider2D col = thin.GetComponent<Collider2D>();
-            col.enabled = false;
+            Physics2D.IgnoreCollision(playerCollider, thin, true);
             yield return new WaitForSeconds(0.5f);
-            col.enabled = true;
+            Physics2D.IgnoreCollision(playerCollider, thin, false);
         }
     }
 }
