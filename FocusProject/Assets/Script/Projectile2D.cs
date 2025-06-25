@@ -10,6 +10,7 @@ public class Projectile2D : MonoBehaviour, IFocusAffectable
     public ParticleSystem HitEffect;
 
     private float currentSpeed;
+    private float baseRotSpeed; // 원래 회전 속도 저장
     private Transform target;
     private Rigidbody2D rigidbody2D;
 
@@ -34,19 +35,23 @@ public class Projectile2D : MonoBehaviour, IFocusAffectable
 
     void Update()
     {
-        Debug.DrawRay(transform.position, transform.right * 2f, Color.red, 2f);
+        Debug.DrawRay(transform.position, new Vector2(transform.forward.x, transform.forward.y) * 2f, Color.red, 2f);
     }
 
     void FixedUpdate()
     {
-        Vector2 moveDir = transform.right;
+        Vector2 moveDir = new Vector2(transform.forward.x, transform.forward.y);
 
         if (IsTargeting && target != null)
         {
             Vector2 toTarget = ((Vector2)target.position - (Vector2)transform.position).normalized;
-            float angle = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), RotSpeed * Time.fixedDeltaTime);
-            moveDir = transform.right;
+            Vector3 targetDir = new Vector3(toTarget.x, toTarget.y, 0f);
+            if (targetDir != Vector3.zero)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(targetDir, Vector3.back); 
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, RotSpeed * Time.fixedDeltaTime);
+            }
+            moveDir = new Vector2(transform.forward.x, transform.forward.y);
         }
 
         rigidbody2D.MovePosition(rigidbody2D.position + moveDir * currentSpeed * Time.fixedDeltaTime);
@@ -57,6 +62,7 @@ public class Projectile2D : MonoBehaviour, IFocusAffectable
         currentSpeed = speed;
         IsTargeting = isTargeting;
         RotSpeed = rotSpeed;
+        baseRotSpeed = rotSpeed;
         HitEffect = hitEffect;
 
         if (IsTargeting)
@@ -70,6 +76,7 @@ public class Projectile2D : MonoBehaviour, IFocusAffectable
     public void ApplyFocusSlow(float factor)
     {
         currentSpeed = Speed * factor;
+        RotSpeed = baseRotSpeed * factor;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

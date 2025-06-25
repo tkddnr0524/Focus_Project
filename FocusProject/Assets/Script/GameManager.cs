@@ -9,8 +9,17 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerPrefab;         // 플레이어 프리팹 연결
     public Transform respawnPoint;          // 부활 위치 지정
+    public GameObject gameOverPanel;
+
+    public GameObject pausePanel; // 퍼즈 UI 패널
+    private bool isPaused = false;
+
+    public bool IsPaused => isPaused;
+
+    public bool IsGameOver => isGameOver;
 
     private bool isGameOver = false;
+    
 
     private void Awake()
     {
@@ -20,31 +29,84 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerDeath()
     {
+        if (isGameOver) return;
+
         isGameOver = true;
 
         // 필요하면 게임 일시정지, UI 표시 등 처리
         Time.timeScale = 0f;
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
     }
 
     private void Update()
     {
         if (isGameOver && Input.anyKeyDown)
         {
-            isGameOver = false;
-            Time.timeScale = 1f;
+            RestartGame();
+        }
 
-            SpawnPlayer();
+        if (!isGameOver && Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
         }
     }
 
-    private void SpawnPlayer()
+    /// <summary>
+    /// 씬 전체를 리로드하여 게임을 완전히 초기화
+    /// </summary>
+    private void RestartGame()
     {
-        if (playerPrefab == null || respawnPoint == null)
+        Time.timeScale = 1f; // 시간 다시 흐르게
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name); // 현재 씬 다시 로드
+    }
+
+    /// <summary>
+    /// 게임을 일시정지하거나 재개
+    /// </summary>
+    private void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (pausePanel != null)
+            pausePanel.SetActive(isPaused);
+
+        Time.timeScale = isPaused ? 0f : 1f;
+
+        if (isPaused)
         {
-            Debug.LogError("playerPrefab 또는 respawnPoint가 할당되지 않았습니다.");
-            return;
+            // 포커스 강제 해제
+            var player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                var focus = player.GetComponent<FocusSkillController>();
+                if (focus != null && focus.isFocusActive)
+                    focus.ForceDeactivate(); 
+            }
+
+            // 2) 게임 일시정지
+            Time.timeScale = 0f;
+            pausePanel.SetActive(true);
+            isPaused = true;
+        }
+        else
+        {
+            // 퍼즈 해제
+            Time.timeScale = 1f;
+            pausePanel.SetActive(false);
+            isPaused = false;
         }
 
-        Instantiate(playerPrefab, respawnPoint.position, Quaternion.identity);
+    }
+
+    public void OnResumeButton()
+    {
+        isPaused = false;
+        if (pausePanel != null)
+            pausePanel.SetActive(false);
+
+        Time.timeScale = 1f;
     }
 }

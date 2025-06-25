@@ -18,6 +18,11 @@ public class FocusSkillController : MonoBehaviour
 
     [SerializeField] private float aimMoveSpeed = 3f;                   // 조준 원 이동 속도 (유닛/초)
 
+    [Header("범위 증가 설정")]
+    [SerializeField] private float rangeIncreaseInterval = 15f; // 증가 주기 (초)
+    [SerializeField] private float rangeIncreaseAmount = 0.5f;  // 증가량 (예: 0.5 유닛씩 증가)
+
+    private float rangeIncreaseTimer = 0f; // 누적 타이머
     private float currentFocusTime;                                     // 남은 포커스 시간
     public bool isFocusActive = false;                                 // 현재 스킬 발동 여부
     private bool canUseFocus = true;                                    // 사용 가능 상태
@@ -42,11 +47,21 @@ public class FocusSkillController : MonoBehaviour
         }
 
         UpdateFocusGauge();
+
+        rangeIncreaseTimer += Time.unscaledDeltaTime;
+        if (rangeIncreaseTimer >= rangeIncreaseInterval)
+        {
+            rangeIncreaseTimer = 0f;
+            maxFocusRange = Mathf.Min(maxFocusRange + rangeIncreaseAmount, 30f);
+        }
     }
 
     // 스킬 발동/해제 처리
     private void HandleInput()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsPaused)
+            return; // 퍼즈 중엔 입력 무시
+
         if (Input.GetKeyDown(focusKey) && canUseFocus)
         {
             ActivateFocus();
@@ -166,6 +181,14 @@ public class FocusSkillController : MonoBehaviour
         return isFocusActive;
     }
 
+    // 포커스 스킬 강제 비활성화 및 순간이동
+    public void ForceDeactivate()
+    {
+        if (!isFocusActive) return;
+
+        TeleportToAim();
+        DeactivateFocus();
+    }
 
     // 현재 전체 범위의 월드 기준 반지름 반환
     public float GetEffectiveWorldRadius()

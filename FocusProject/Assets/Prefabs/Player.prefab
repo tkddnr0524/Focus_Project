@@ -58,7 +58,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 15, y: 15, z: 15}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5095563625788517412}
@@ -130,7 +130,9 @@ GameObject:
   - component: {fileID: 475669526452861165}
   - component: {fileID: 7723156527887951896}
   - component: {fileID: 2596133838982361477}
-  m_Layer: 0
+  - component: {fileID: 2914678500695585346}
+  - component: {fileID: 6160266318940650639}
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -148,7 +150,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.092581, y: -0.8592024, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6173267838231494477}
   - {fileID: 5151729042780553107}
@@ -196,7 +198,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -6367560908665664636, guid: 40de9a8703e2e5a47882b0b86451c741, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -291,8 +293,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d0d1c8319b84a4eb7ca1ded63292d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
-  jumpForce: 30
+  moveSpeed: 12
+  jumpForce: 40
   groundCheck: {fileID: 465376723313310264}
   groundLayer:
     serializedVersion: 2
@@ -300,6 +302,7 @@ MonoBehaviour:
   thinPlatformLayer:
     serializedVersion: 2
     m_Bits: 128
+  afterImageMgr: {fileID: 0}
 --- !u!114 &7723156527887951896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,13 +318,15 @@ MonoBehaviour:
   focusKey: 102
   focusRangeCircle: {fileID: 6173267838231494477}
   aimIndicator: {fileID: 5151729042780553107}
-  maxFocusRange: 10
+  maxFocusRange: 15
   focusRangeSpriteRadius: 0.5
-  maxFocusTime: 5
+  maxFocusTime: 7.5
   rechargeDelay: 3
   recoverSpeed: 1
   recoverSpeedBoost: 2
-  aimMoveSpeed: 6
+  aimMoveSpeed: 8
+  rangeIncreaseInterval: 20
+  rangeIncreaseAmount: 0.5
   isFocusActive: 0
 --- !u!114 &2596133838982361477
 MonoBehaviour:
@@ -335,6 +340,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7da64113b81daf4f9bbbfa320e98736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2914678500695585346
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331302969492374190}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 20443134bee73a5449b15d8cbfd83208, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6160266318940650639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331302969492374190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af235bbf2895e3f41b23fac4b4e473a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  afterImagePrefab: {fileID: 4233270494805579912, guid: 2d74f84e811f96949a22589c927a6ea4, type: 3}
+  spawnInterval: 0.1
+  lifeTime: 0.5
 --- !u!1 &4581109014715974920
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5151729042780553107
 Transform:
   m_ObjectHideFlags: 0

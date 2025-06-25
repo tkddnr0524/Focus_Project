@@ -4785,8 +4785,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9626,8 +9624,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9722,11 +9718,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 37a83384387fa0d4288db348d8e2a4dc, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 37a83384387fa0d4288db348d8e2a4dc, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 37a83384387fa0d4288db348d8e2a4dc, type: 3}
       propertyPath: m_LocalRotation.y
@@ -9738,7 +9734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 37a83384387fa0d4288db348d8e2a4dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 37a83384387fa0d4288db348d8e2a4dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -9753,11 +9749,11 @@ PrefabInstance:
       value: Shuriken
       objectReference: {fileID: 0}
     - target: {fileID: 1904065403831906568, guid: 37a83384387fa0d4288db348d8e2a4dc, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a4bec174b449607448936480e405cf3c, type: 2}
     - target: {fileID: 4910487492925705279, guid: 37a83384387fa0d4288db348d8e2a4dc, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: fa761847d4e6f2942a331fe2da073629, type: 2}
     - target: {fileID: 7417278485646085091, guid: 37a83384387fa0d4288db348d8e2a4dc, type: 3}

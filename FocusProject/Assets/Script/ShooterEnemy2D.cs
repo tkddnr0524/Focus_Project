@@ -29,26 +29,34 @@ public class ShooterEnemy2D : MonoBehaviour
 
     void Shoot()
     {
-        Vector2 dir = GetPlayerDir();
+        Vector2 dir2D = GetPlayerDir();
+        Vector3 dir3D = new Vector3(dir2D.x, dir2D.y, 0f);  // XY → XYZ
+
         if (CurEffect.StartParticles != null)
         {
-            var startFX = Instantiate(CurEffect.StartParticles, firePoint.position, Quaternion.identity);
-            startFX.transform.right = dir;
-            Destroy(startFX.gameObject, 1.5f); // 적절한 수명 정리
+            var startFX = Instantiate(
+                CurEffect.StartParticles,
+                firePoint.position,
+                Quaternion.identity
+            );
+            startFX.transform.forward = dir3D.normalized;  // 추가하는 코드 입니다
+            Destroy(startFX.gameObject, 1.5f);
         }
 
         if (CurEffect.BulletParticles != null)
         {
-            var obj = Instantiate(CurEffect.BulletParticles, firePoint.position, Quaternion.identity);
-            obj.transform.right = dir;
-            // 자식 오브젝트들을 Y축으로 90도 회전
-            foreach (Transform child in obj.transform)
-            {
-                child.localRotation *= Quaternion.Euler(0f, 90f, 0f);
-            }
+            var obj = Instantiate(
+                CurEffect.BulletParticles,
+                firePoint.position,
+                Quaternion.identity
+            );
+
+            // 추가하는 코드 입니다: +Z(머리)가 dir3D 방향을 바라보도록 설정
+            obj.transform.forward = dir3D.normalized;
+
+            // 이전에 썼던 transform.right, Rotate 등 불필요하니 모두 제거
 
             obj.gameObject.layer = LayerMask.NameToLayer("Projectile");
-
 
             var bullet = obj.gameObject.AddComponent<Projectile2D>();
             bullet.Initialize(Speed, IsTargeting, RotSpeed, CurEffect.HitParticles);
